@@ -1,0 +1,108 @@
+<html>
+<head>
+    <style>
+    .always
+    {
+        background:none;
+        border-radius:10px;
+        -webkit-box-shadow: 3px 3px 5px rgba(10,10,10,0.7), -2px -2px 5px rgba(10,10,10,0.7);
+        -moz-box-shadow:  3px 3px 5px rgba(10,10,10,0.7), -2px -2px 5px rgba(10,10,10,0.7);
+        box-shadow: 3px 3px 5px rgba(10,10,10,0.7), -2px -2px 5px rgba(10,10,10,0.7);
+        padding:7px;
+    }
+        body {
+            padding-left: 50px;
+        }
+        hr {
+            height: 2px;
+            background-color: rgba(5,5,5,0.8);
+        }
+    </style>
+    
+ <script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous">
+ </script>
+ <script>
+     $(document).ready(function(){
+         $('.up').on("click",function(){
+            var id = $(this).attr('id');
+            var curr=$(this).attr('value');
+            req= $.ajax({
+                
+                url: '/upvoted',
+                type: 'POST',
+                data: {id: id,val: curr}
+                });
+         location.reload(true);   
+         });
+         
+     });
+     $(document).ready(function(){
+         $('.down').on("click",function(){
+            var id = $(this).attr('id');
+            var curr=$(this).attr('value');
+            req= $.ajax({
+                
+                url: '/downvoted',
+                type: 'POST',
+                data: {id: id,val: curr}
+                });
+         location.reload(true);    
+         });
+     });
+ </script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>Comments</title>
+</head>
+<body>
+    <div style="margin-top:50px">
+<div class="container">
+    <h1>Post Comment</h1>
+    
+<form method="post" action="/">
+    <fieldset>
+        <textarea name="comment" class="form-group form-control" rows="5" cols="5" required placeholder="Type A Comment"></textarea><br>
+    </fieldset>
+<button type="submit" class="btn btn-danger pull-right">Post Comment</button><br>
+</form>
+</div>
+<br>
+<div class="container always">
+
+    <% for(var i=0;i<comnt.length;i++) 
+    {
+    %>
+    <div>
+        <div class="row">
+            <div class="col-md-11" style="padding: 20px 2px 5px 50px">
+                <p><%= comnt[i].body %></p>
+            </div>
+            <div class="col-md-1">
+                <div class="row">
+                    <div class="col-md-12 d-flex">
+                        <i id="<%= comnt[i]._id %>" style="color: green; cursor:pointer;" class="up fa fa-2x fa-thumbs-up" value="<%= comnt[i].upvote %>"  aria-hidden="true"></i>&nbsp;&nbsp;<label id="u_<%= comnt[i]._id %>" ><%= comnt[i].upvote %></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <i id="<%= comnt[i]._id %>" style="color: red; cursor:pointer;" class="down fa fa-2x fa-thumbs-down" value="<%= comnt[i].downvote %>" aria-hidden="true"></i>&nbsp;&nbsp;<label id="d_<%= comnt[i]._id %>"><%= comnt[i].downvote %></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="height: 2px; background-color: rgba(50,50,50,0.8); border: none; border-radius: 2px; width: 95%;"/>
+
+    </div>
+     <br>
+     <%
+     }
+     %>
+     </div>
+</div>
+</div>
+</body>
+</html>
